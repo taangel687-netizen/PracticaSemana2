@@ -1,137 +1,185 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Galería de proyectos técnicos desarrollados por estudiantes de Ingeniería de Sistemas."
+    />
+    <meta name="author" content="Estudiantes de Ingeniería de Sistemas" />
+    <title>Galería de Proyectos Técnicos | FIS</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-  <!-- SEO: redactado manualmente (restricción anti-IA del Paso 1) -->
-  <meta name="description" content="Galería de proyectos técnicos de estudiantes de Ingeniería de Sistemas de la UNCP: aplicaciones web, sistemas embebidos y soluciones de software desarrolladas en el curso de Desarrollo de Aplicaciones Web.">
-  <meta name="author" content="Equipo de Ingeniería de Sistemas - UNCP">
-  <meta name="robots" content="index, follow">
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
 
-  <title>Galería de Proyectos Técnicos | Ingeniería de Sistemas - UNCP</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<!-- data-category simula el "nodo raíz" que en un escenario real vendría de un feed XML -->
-<body data-category="galeria-proyectos">
-
-  <!-- Skip link: visible al recibir foco (WCAG 2.1 - Bypass Blocks) -->
-  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-
-  <header class="site-header">
-    <div class="header-brand">
-      <h1>Galería de Proyectos Técnicos</h1>
-      <p class="tagline">Programa de Ingeniería de Sistemas &mdash; UNCP</p>
-    </div>
-
-    <nav role="navigation" aria-label="Navegación principal" class="main-nav">
-      <ul>
-        <li><a href="#contenido-principal">Inicio</a></li>
-        <li><a href="#proyectos">Proyectos</a></li>
-        <li><a href="#sobre-galeria">Acerca de</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main id="contenido-principal" class="layout-grid">
-
-    <section id="proyectos" class="proyectos-section" aria-labelledby="proyectos-titulo" data-category="proyectos">
-      <h2 id="proyectos-titulo">Proyectos destacados</h2>
-      <p class="section-intro">Trabajos desarrollados por equipos del curso, validados con criterios de accesibilidad y SEO técnico.</p>
-
-      <div class="cards-container">
-
-        <article class="card" data-category="web" tabindex="0">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='220'><rect width='400' height='220' fill='%230B5FFF'/><text x='50%25' y='50%25' fill='white' font-size='22' text-anchor='middle' dy='.3em' font-family='sans-serif'>Sistema Web</text></svg>"
-               alt="Captura de pantalla del panel principal del sistema web de gestión académica"
-               width="400" height="220" loading="lazy">
-          <div class="card-body">
-            <h3>Sistema de Gestión Académica</h3>
-            <p>Plataforma web para matrícula y seguimiento de notas, construida con HTML5 semántico y CSS Grid.</p>
-            <ul class="tags" aria-label="Tecnologías usadas">
-              <li>HTML5</li><li>CSS Grid</li><li>Node.js</li>
-            </ul>
-          </div>
-        </article>
-
-        <article class="card card--tall" data-category="movil" tabindex="0">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='320'><rect width='400' height='320' fill='%23FF6B35'/><text x='50%25' y='50%25' fill='white' font-size='22' text-anchor='middle' dy='.3em' font-family='sans-serif'>App Móvil</text></svg>"
-               alt="Vista de la interfaz de la aplicación móvil de monitoreo de riego"
-               width="400" height="320" loading="lazy">
-          <div class="card-body">
-            <h3>App de Riego Inteligente</h3>
-            <p>Aplicación híbrida que monitorea humedad de suelo mediante sensores IoT y notifica al agricultor en tiempo real.</p>
-            <ul class="tags" aria-label="Tecnologías usadas">
-              <li>Flutter</li><li>IoT</li><li>MQTT</li>
-            </ul>
-          </div>
-        </article>
-
-        <article class="card" data-category="datos" tabindex="0">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='220'><rect width='400' height='220' fill='%2343A047'/><text x='50%25' y='50%25' fill='white' font-size='22' text-anchor='middle' dy='.3em' font-family='sans-serif'>Dashboard</text></svg>"
-               alt="Dashboard de indicadores con gráficos de barras y líneas"
-               width="400" height="220" loading="lazy">
-          <div class="card-body">
-            <h3>Dashboard de Indicadores</h3>
-            <p>Visualización de KPIs institucionales con tipografía fluida y componentes accesibles por teclado.</p>
-            <ul class="tags" aria-label="Tecnologías usadas">
-              <li>CSS Flexbox</li><li>SVG</li><li>ARIA</li>
-            </ul>
-          </div>
-        </article>
-
-        <article class="card card--tall" data-category="web" tabindex="0">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'><rect width='400' height='300' fill='%238E24AA'/><text x='50%25' y='50%25' fill='white' font-size='22' text-anchor='middle' dy='.3em' font-family='sans-serif'>Tienda Web</text></svg>"
-               alt="Vista de catálogo de productos de una tienda web responsiva"
-               width="400" height="300" loading="lazy">
-          <div class="card-body">
-            <h3>Tienda Web Responsiva</h3>
-            <p>Catálogo con Container Queries: las tarjetas de producto reorganizan su contenido según el espacio disponible del contenedor, no de la ventana.</p>
-            <ul class="tags" aria-label="Tecnologías usadas">
-              <li>Container Queries</li><li>clamp()</li>
-            </ul>
-          </div>
-        </article>
-
-        <article class="card" data-category="datos" tabindex="0">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='220'><rect width='400' height='220' fill='%23F9A825'/><text x='50%25' y='50%25' fill='white' font-size='22' text-anchor='middle' dy='.3em' font-family='sans-serif'>API REST</text></svg>"
-               alt="Documentación interactiva de una API REST académica"
-               width="400" height="220" loading="lazy">
-          <div class="card-body">
-            <h3>API REST Académica</h3>
-            <p>Servicio backend documentado con OpenAPI, consumido por las demás aplicaciones de la galería.</p>
-            <ul class="tags" aria-label="Tecnologías usadas">
-              <li>Express</li><li>OpenAPI</li>
-            </ul>
-          </div>
-        </article>
-
+    <header class="site-header" id="inicio">
+      <div class="header-content">
+        <p class="eyebrow">Facultad de Ingeniería de Sistemas</p>
+        <h1>Galería de Proyectos Técnicos</h1>
+        <p class="header-description">
+          Una colección de proyectos académicos y tecnológicos desarrollados en
+          el área de Ingeniería de Sistemas.
+        </p>
       </div>
-    </section>
+    </header>
 
-    <aside class="sidebar" aria-label="Filtros y estado de accesibilidad">
-      <h2>Estado de validación</h2>
-      <ul class="checklist">
-        <li>✔ W3C Validator: 0 errores</li>
-        <li>✔ WAVE: 0 contrastes fallidos</li>
-        <li>✔ Lighthouse ≥ 90 (Accesibilidad / SEO)</li>
-      </ul>
-      <h2>Modo de color</h2>
-      <p>La galería respeta la preferencia del sistema operativo (<code>prefers-color-scheme</code>) y cambia con una transición suave, sin recargar la página.</p>
-    </aside>
+    <nav class="site-nav" aria-label="Navegación principal">
+      <div class="nav-content">
+        <a href="#inicio">Inicio</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#tecnologias">Tecnologías</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </nav>
 
-  </main>
+    <main id="contenido">
+      <section class="intro-section" aria-labelledby="titulo-introduccion">
+        <div class="intro-content">
+          <p class="eyebrow">Portafolio académico</p>
+          <h2 id="titulo-introduccion">
+            Tecnología aplicada a soluciones reales
+          </h2>
+          <p>
+            Esta galería presenta diferentes proyectos relacionados con
+            desarrollo web, aplicaciones, bases de datos y análisis de
+            información.
+          </p>
+        </div>
+      </section>
 
-  <section id="sobre-galeria" class="about-section" aria-labelledby="about-titulo">
-    <h2 id="about-titulo">Acerca de esta galería</h2>
-    <p>Este proyecto fue desarrollado como práctica del curso Desarrollo de Aplicaciones Web (IS093A), Unidad I: Desarrollo Web Frontend. Aplica HTML5 semántico, CSS3 avanzado (Grid, Flexbox, Container Queries, tipografía fluida) y validación de accesibilidad WCAG 2.1.</p>
-  </section>
+      <section
+        id="proyectos"
+        class="projects-section"
+        aria-labelledby="titulo-proyectos"
+      >
+        <div class="section-heading">
+          <p class="eyebrow">Trabajos destacados</p>
+          <h2 id="titulo-proyectos">Proyectos técnicos</h2>
+          <p>
+            Explora algunos proyectos desarrollados utilizando diferentes
+            tecnologías y herramientas.
+          </p>
+        </div>
 
-  <footer id="contacto" class="site-footer">
-    <p>Universidad Nacional del Centro del Perú &mdash; Facultad de Ingeniería de Sistemas</p>
-    <p><a href="mailto:contacto@uncp.edu.pe">contacto@uncp.edu.pe</a></p>
-  </footer>
+        <div class="projects-grid">
+          <article class="project-card" data-category="desarrollo-web">
+            <div class="project-content">
+              <div>
+                <p class="project-number">Proyecto 01</p>
+                <h3>Bolsa de Trabajo</h3>
+                <p>
+                  Plataforma web orientada a conectar estudiantes con empresas y
+                  oportunidades laborales.
+                </p>
+              </div>
+              <ul class="technologies" aria-label="Tecnologías utilizadas">
+                <li>HTML5</li>
+                <li>CSS3</li>
+                <li>JavaScript</li>
+                <li>SQL Server</li>
+              </ul>
+            </div>
+          </article>
 
-</body>
+          <article class="project-card" data-category="aplicacion-movil">
+            <div class="project-content">
+              <div>
+                <p class="project-number">Proyecto 02</p>
+                <h3>Aplicación Educativa</h3>
+                <p>
+                  Aplicación móvil orientada a apoyar procesos de aprendizaje
+                  mediante herramientas digitales.
+                </p>
+              </div>
+              <ul class="technologies" aria-label="Tecnologías utilizadas">
+                <li>Android</li>
+                <li>Java</li>
+                <li>Firebase</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="analisis-datos">
+            <div class="project-content">
+              <div>
+                <p class="project-number">Proyecto 03</p>
+                <h3>Dashboard de Datos</h3>
+                <p>
+                  Sistema de visualización de indicadores para facilitar el
+                  análisis y la toma de decisiones.
+                </p>
+              </div>
+              <ul class="technologies" aria-label="Tecnologías utilizadas">
+                <li>Power BI</li>
+                <li>SQL</li>
+                <li>Excel</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="sistema-web">
+            <div class="project-content">
+              <div>
+                <p class="project-number">Proyecto 04</p>
+                <h3>Sistema de Gestión</h3>
+                <p>
+                  Aplicación web para administrar información institucional y
+                  facilitar la gestión de diferentes procesos.
+                </p>
+              </div>
+              <ul class="technologies" aria-label="Tecnologías utilizadas">
+                <li>PHP</li>
+                <li>Laravel</li>
+                <li>MySQL</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section
+        id="tecnologias"
+        class="technologies-section"
+        aria-labelledby="titulo-tecnologias"
+      >
+        <div class="section-heading">
+          <p class="eyebrow">Herramientas</p>
+          <h2 id="titulo-tecnologias">Tecnologías utilizadas</h2>
+        </div>
+
+        <ul class="technology-list" aria-label="Lista de tecnologías">
+          <li>HTML5</li>
+          <li>CSS3</li>
+          <li>JavaScript</li>
+          <li>PHP</li>
+          <li>Laravel</li>
+          <li>SQL Server</li>
+          <li>MySQL</li>
+          <li>Power BI</li>
+        </ul>
+      </section>
+
+      <section
+        id="contacto"
+        class="contact-section"
+        aria-labelledby="titulo-contacto"
+      >
+        <div class="contact-content">
+          <p class="eyebrow">Información</p>
+          <h2 id="titulo-contacto">Contacto</h2>
+          <p>
+            Galería académica de proyectos desarrollados en Ingeniería de
+            Sistemas.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Galería de Proyectos Técnicos FIS</p>
+    </footer>
+  </body>
 </html>

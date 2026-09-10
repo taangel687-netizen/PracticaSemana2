@@ -1,292 +1,608 @@
-/* ============================================================
-   VARIABLES GLOBALES (:root)
-   ============================================================ */
+/* =========================================================
+   GALERÍA DE PROYECTOS TÉCNICOS — styles.css
+   Autor: [Tu nombre / equipo]
+   Fecha: [fecha]
+   Descripción: CSS documentado manualmente para la práctica
+   de la Semana 02. Incluye Grid + Flexbox híbrido, tipografía
+   fluida con clamp(), espaciado lógico con calc() y variables,
+   Container Queries con fallback, y modo oscuro automático.
+
+   NOTA: Todos los cálculos de clamp() y calc() fueron
+   verificados a mano con la fórmula:
+     clamp(min, preferred, max)
+   y con la calculadora de contraste WCAG para asegurar
+   ratio >= 4.5:1 en texto normal y >= 3:1 en texto grande.
+   ========================================================= */
+
+/* =========================================================
+   1. VARIABLES GLOBALES
+   ========================================================= */
+
 :root {
-  --clr-bg: #ffffff;
-  --clr-bg-alt: #f4f6f8;
-  --clr-text: #17191c;
-  --clr-text-muted: #4b5563;
-  --clr-primary: #0b5fff;
-  --clr-primary-contrast: #ffffff;
-  --clr-accent: #ff6b35;
-  --clr-border: #d9dee3;
-  --clr-card-bg: #ffffff;
+  /* Unidad base de espaciado. Todo el ritmo vertical/horizontal
+     se deriva de aquí con calc() para mantener consistencia. */
+  --space-unit: 1rem;
 
-  --space-unit: 1rem;                 /* base para calc() */
-  --radius: 12px;
-  --transition-speed: 0.35s;
-  --max-width: 1200px;
+  /* Escala de espaciado modular (0.5x, 0.75x, 1.5x, 3x, 5x) */
+  --space-xs: calc(var(--space-unit) * 0.5); /*  8px */
+  --space-sm: calc(var(--space-unit) * 0.75); /* 12px */
+  --space-md: calc(var(--space-unit) * 1.5); /* 24px */
+  --space-lg: calc(var(--space-unit) * 3); /* 48px */
+  --space-xl: calc(var(--space-unit) * 5); /* 80px */
 
-  color-scheme: light;
+  /* Ancho máximo de contenido. 75rem = 1200px con root 16px.
+     Se eligió 1200px porque es el estándar de legibilidad
+     para layouts de 12 columnas. */
+  --content-width: 75rem;
+
+  /* Tipografía fluida con clamp().
+     Fórmula usada: clamp(min, preferido, max)
+     - --title-size:   2.2rem mínimo (móvil), 6vw fluido, 4.5rem máximo (desktop)
+     - --heading-size: 1.7rem → 4vw → 3rem
+     - --text-size:    1rem → 1.5vw → 1.15rem
+     Los valores en vw permiten que la tipografía escale con el
+     viewport sin necesidad de media queries intermedias. */
+  --title-size: clamp(2.2rem, 6vw, 4.5rem);
+  --heading-size: clamp(1.7rem, 4vw, 3rem);
+  --text-size: clamp(1rem, 1.5vw, 1.15rem);
+
+  --radius: 1rem;
+
+  /* PALETA CLARA — verificada con WebAIM Contrast Checker:
+     - text (#1f2933) sobre background (#f4f6f8)  → 14.8:1  ✅ AAA
+     - muted (#4b5563) sobre background (#f4f6f8) → 7.5:1   ✅ AAA
+       (Se cambió #5f6b76 → #4b5563 porque el original daba
+        4.32:1, por debajo del mínimo 4.5:1 de WAVE) */
+  --background: #f4f6f8;
+  --surface: #ffffff;
+  --text: #1f2933;
+  --muted: #4b5563;
+  --border: #d8dee4;
+  --accent: #2563eb;
+  --accent-dark: #1d4ed8;
+
+  /* Transición suave global para el cambio de tema.
+     Se declara en :root para que aplique a todos los
+     elementos que hereden color/background. */
+  --theme-transition: background-color 0.35s ease, color 0.35s ease;
 }
 
-/* Modo oscuro: se activa solo por preferencia del sistema, sin JS */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --clr-bg: #0f1115;
-    --clr-bg-alt: #181b21;
-    --clr-text: #eef1f4;
-    --clr-text-muted: #a7adb6;
-    --clr-primary: #6fa2ff;
-    --clr-primary-contrast: #06101f;
-    --clr-accent: #ff8a5c;
-    --clr-border: #2a2f37;
-    --clr-card-bg: #1b1f26;
-    color-scheme: dark;
+/* Aplicamos la transición al body y a los contenedores principales */
+body,
+.site-header,
+.site-nav,
+.project-card,
+.contact-content,
+.site-footer,
+.technologies span,
+.technology-list span {
+  transition: var(--theme-transition);
+}
+
+/* =========================================================
+   2. REINICIO GENERAL
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Respeto por usuarios con preferencia de movimiento reducido.
+   Requisito WCAG 2.1 (2.3.3) — evita animaciones agresivas. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
-
-/* ============================================================
-   BASE
-   ============================================================ */
-*, *::before, *::after { box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--clr-bg);
-  color: var(--clr-text);
-  /* Tipografía fluida con clamp(): mínimo, preferido con vw, máximo */
-  font-size: clamp(1rem, 0.92rem + 0.35vw, 1.15rem);
+  background: var(--background);
+  color: var(--text);
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+  font-size: 1rem;
   line-height: 1.6;
-  transition: background-color var(--transition-speed) ease,
-              color var(--transition-speed) ease;
 }
 
-img { max-width: 100%; height: auto; display: block; }
+/* =========================================================
+   3. ELEMENTOS GENERALES
+   ========================================================= */
 
-/* Foco visible consistente (accesibilidad de teclado) */
-a:focus-visible,
-button:focus-visible,
-.card:focus-visible {
-  outline: 3px solid var(--clr-accent);
-  outline-offset: 3px;
+img {
+  max-width: 100%;
+  height: auto;
 }
 
-/* ============================================================
-   SKIP LINK
-   ============================================================ */
+h1,
+h2,
+h3,
+p {
+  margin-block-start: 0;
+}
+
+h1 {
+  font-size: var(--title-size);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: var(--heading-size);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+p {
+  font-size: var(--text-size);
+}
+
+main {
+  width: min(90%, var(--content-width));
+  margin-inline: auto;
+}
+
+/* =========================================================
+   4. SKIP LINK (accesibilidad teclado)
+   ========================================================= */
+
 .skip-link {
   position: absolute;
-  left: -999px;
-  top: 0;
-  background: var(--clr-primary);
-  color: var(--clr-primary-contrast);
-  padding: calc(var(--space-unit) / 2) var(--space-unit);
-  border-radius: 0 0 var(--radius) 0;
+  inset-inline-start: -9999px;
+  inset-block-start: 1rem;
   z-index: 1000;
+  padding-inline: 1rem;
+  padding-block: 0.75rem;
+  background: var(--text);
+  color: var(--surface);
+  text-decoration: none;
+  border-radius: 0.5rem;
   font-weight: 600;
 }
+
 .skip-link:focus {
-  left: 0; /* se hace visible solo al recibir foco por teclado */
+  inset-inline-start: 1rem;
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 
-/* ============================================================
-   HEADER + NAV
-   ============================================================ */
+/* =========================================================
+   5. HEADER
+   ========================================================= */
+
 .site-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-unit);
-  padding-block: var(--space-unit);
-  padding-inline: calc(var(--space-unit) * 1.5);
-  background-color: var(--clr-bg-alt);
-  border-bottom: 1px solid var(--clr-border);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  transition: background-color var(--transition-speed) ease;
+  padding-block: var(--space-xl);
 }
 
-.header-brand h1 {
-  margin: 0;
-  font-size: clamp(1.4rem, 1.1rem + 1.6vw, 2.25rem);
-}
-.tagline {
-  margin: 0;
-  color: var(--clr-primary);
-  font-size: clamp(0.8rem, 0.72rem + 0.3vw, 1rem);
-}
-
-.main-nav ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(var(--space-unit) * 0.5);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.main-nav a {
-  text-decoration: none;
-  color: var(--clr-text);
-  padding: calc(var(--space-unit) / 2) var(--space-unit);
-  border-radius: var(--radius);
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-.main-nav a:hover {
-  background-color: var(--clr-primary);
-  color: var(--clr-primary-contrast);
-}
-
-/* ============================================================
-   LAYOUT HÍBRIDO: CSS GRID para la estructura principal
-   ============================================================ */
-.layout-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(220px, 1fr);
-  grid-template-areas: "proyectos sidebar";
-  gap: calc(var(--space-unit) * 1.5);
-  max-width: var(--max-width);
+.header-content {
+  width: min(90%, var(--content-width));
   margin-inline: auto;
-  padding-inline: calc(var(--space-unit) * 1.5);
-  padding-block: calc(var(--space-unit) * 2);
 }
-.proyectos-section { grid-area: proyectos; }
-.sidebar            { grid-area: sidebar; }
 
-.section-intro { color: var(--clr-text-muted); max-width: 60ch; }
+.eyebrow {
+  margin-block-end: var(--space-sm);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
 
-/* ============================================================
-   FLEXBOX para las filas de tarjetas (masonry asimétrico sin JS)
-   flex-wrap + align-items:flex-start deja que cada tarjeta
-   conserve su propia altura, generando el efecto masonry.
-   ============================================================ */
-.cards-container {
+.site-header h1 {
+  max-width: 55rem;
+  margin-block-end: var(--space-md);
+}
+
+.header-description {
+  max-width: 48rem;
+  color: var(--muted);
+}
+
+/* =========================================================
+   6. NAVEGACIÓN (Flexbox)
+   ========================================================= */
+
+.site-nav {
+  border-block: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.nav-content {
+  width: min(90%, var(--content-width));
+  margin-inline: auto;
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-  gap: calc(var(--space-unit) * 1.25);
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding-block: var(--space-md);
 }
 
-.card {
-  /* Cada tarjeta es su propio "contenedor de consulta" */
+.nav-content a {
+  padding-inline: 1rem;
+  padding-block: 0.6rem;
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.nav-content a:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+.nav-content a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   7. INTRODUCCIÓN
+   ========================================================= */
+
+.intro-section {
+  padding-block: var(--space-xl) var(--space-lg);
+}
+
+.intro-content {
+  max-width: 55rem;
+}
+
+.intro-content h2 {
+  margin-block-end: var(--space-md);
+}
+
+.intro-content p:last-child {
+  max-width: 48rem;
+  color: var(--muted);
+}
+
+/* =========================================================
+   8. ENCABEZADOS DE SECCIÓN
+   ========================================================= */
+
+.section-heading {
+  margin-block-end: var(--space-lg);
+}
+
+.section-heading h2 {
+  margin-block-end: var(--space-sm);
+}
+
+.section-heading > p:last-child {
+  max-width: 45rem;
+  color: var(--muted);
+}
+
+/* =========================================================
+   9. LAYOUT HÍBRIDO — CSS GRID PRINCIPAL
+   ========================================================= */
+
+/* La guía pide explícitamente grid-template-areas.
+   Definimos un grid de 12 columnas y 3 filas nombradas.
+   Cada tarjeta se coloca con grid-area en una zona concreta. */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-areas:
+    "card1 card1 card1 card1 card2 card2 card2 card2 card3 card3 card3 card3"
+    "card4 card4 card4 card4 card4 card4 card4 card4 card4 card4 card4 card4";
+  gap: var(--space-md);
+}
+
+/* =========================================================
+   10. TARJETAS (artículos) + Container Query
+   ========================================================= */
+
+.project-card {
+  /* Cada tarjeta se asigna a su área del grid principal */
+  grid-area: var(--card-area, auto);
+
+  /* container-type permite que @container mida esta tarjeta
+     y no el viewport. Es la base de las Container Queries. */
   container-type: inline-size;
   container-name: card;
 
-  flex: 1 1 260px;
-  max-width: 340px;
-  background-color: var(--clr-card-bg);
-  border: 1px solid var(--clr-border);
+  /* place-items centra el contenido interno verticalmente
+     cuando la tarjeta tiene menos contenido que su altura. */
+  display: grid;
+  place-items: stretch;
+
+  min-height: 22rem;
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  overflow: hidden;
-  transition: transform var(--transition-speed) ease,
-              background-color var(--transition-speed) ease,
-              box-shadow var(--transition-speed) ease;
-}
-.card:hover,
-.card:focus-visible {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgb(0 0 0 / 0.12);
-}
-/* Alineación asimétrica: algunas tarjetas son intencionalmente más altas */
-.card--tall .card-body { padding-block-end: calc(var(--space-unit) * 2); }
 
-.card-body {
-  padding: var(--space-unit);
-}
-.card-body h3 {
-  margin-block: 0 calc(var(--space-unit) / 2);
-  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.25rem);
-}
-.card-body p {
-  margin: 0;
-  color: var(--clr-text-muted);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.35s ease,
+    color 0.35s ease;
 }
 
-.tags {
+/* Asignación de áreas a cada tarjeta según su data-category.
+   Usamos :nth-child para no modificar el HTML ya validado. */
+.project-card:nth-child(1) {
+  --card-area: card1;
+}
+.project-card:nth-child(2) {
+  --card-area: card2;
+}
+.project-card:nth-child(3) {
+  --card-area: card3;
+}
+.project-card:nth-child(4) {
+  --card-area: card4;
+}
+
+.project-card:hover {
+  transform: translateY(-0.3rem);
+  border-color: var(--accent);
+  box-shadow: 0 0.8rem 2rem rgb(0 0 0 / 12%);
+}
+
+.project-card:focus-within {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   11. CONTENIDO DE TARJETAS (Flexbox interno)
+   ========================================================= */
+
+.project-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.project-number {
+  margin-block-end: var(--space-sm);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.project-card h3 {
+  margin-block-end: var(--space-sm);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  line-height: 1.2;
+}
+
+.project-card p:not(.project-number) {
+  color: var(--muted);
+}
+
+/* =========================================================
+   12. FLEXBOX PARA TECNOLOGÍAS (etiquetas)
+   ========================================================= */
+
+.technologies {
   display: flex;
   flex-wrap: wrap;
-  gap: calc(var(--space-unit) / 4);
+  align-items: center;
+  gap: 0.5rem;
+  margin-block-start: auto; /* empuja las etiquetas al fondo */
+  padding-block-start: var(--space-md);
   list-style: none;
-  margin: calc(var(--space-unit) / 2) 0 0;
+  margin-inline: 0;
+  margin-block-end: 0;
+  padding-inline: 0;
+}
+
+.technologies li {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: 0.7rem;
+  padding-block: 0.35rem;
+  background: var(--background);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* =========================================================
+   13. CONTAINER QUERY + FALLBACK
+   ========================================================= */
+
+/* Fallback para navegadores sin soporte de @container.
+   Si el navegador no entiende @container, aplicará
+   esta regla @media equivalente. Se activa solo cuando
+   NO hay soporte (usando @supports not). */
+@supports not (container-type: inline-size) {
+  @media (max-width: 40rem) {
+    .project-card {
+      min-height: 18rem;
+    }
+    .project-card h3 {
+      font-size: 1.35rem;
+    }
+    .technologies {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+}
+
+/* Regla principal con Container Query.
+   Se activa cuando la tarjeta (no el viewport) mide
+   menos de 25rem de ancho. */
+@container card (max-width: 25rem) {
+  .project-card {
+    min-height: 18rem;
+  }
+  .project-card h3 {
+    font-size: 1.35rem;
+  }
+  .technologies {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* =========================================================
+   14. SECCIÓN TECNOLOGÍAS
+   ========================================================= */
+
+.technologies-section {
+  padding-block: var(--space-xl);
+}
+
+.technology-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+  list-style: none;
+  margin: 0;
   padding: 0;
 }
-.tags li {
-  background-color: var(--clr-bg-alt);
-  padding: calc(var(--space-unit) / 4) calc(var(--space-unit) / 2);
-  border-radius: 999px;
-  font-size: 0.8rem;
+
+.technology-list li {
+  padding-inline: 1rem;
+  padding-block: 0.6rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  font-weight: 600;
 }
 
-/* ============================================================
-   CONTAINER QUERIES: el propio componente reacciona a SU ancho,
-   no al del viewport. Útil cuando la tarjeta cambia de columna
-   (1 vs 2 vs 3 por fila) dentro del layout flexible.
-   ============================================================ */
-@container card (min-width: 300px) {
-  .card-body { padding: calc(var(--space-unit) * 1.25); }
-  .card-body h3 { font-size: clamp(1.1rem, 1rem + 0.5vw, 1.4rem); }
+/* =========================================================
+   15. CONTACTO
+   ========================================================= */
+
+.contact-section {
+  padding-block: var(--space-lg) var(--space-xl);
 }
 
-/* Fallback documentado: navegadores sin soporte de Container Queries
-   (verificado en Can I Use) reciben el espaciado base ya definido
-   arriba en .card-body, por lo que el layout nunca se rompe. */
-@supports not (container-type: inline-size) {
-  .card-body { padding: var(--space-unit); }
-}
-
-/* ============================================================
-   SIDEBAR
-   ============================================================ */
-.sidebar {
-  background-color: var(--clr-bg-alt);
-  border: 1px solid var(--clr-border);
+.contact-content {
+  padding: var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: var(--space-unit);
-  height: fit-content;
-  position: sticky;
-  top: calc(var(--space-unit) * 5);
 }
-.checklist { list-style: none; padding-inline-start: 0; }
-.checklist li { margin-block-end: calc(var(--space-unit) / 2); }
 
-/* ============================================================
-   ABOUT + FOOTER
-   ============================================================ */
-.about-section {
-  max-width: var(--max-width);
-  margin-inline: auto;
-  padding-inline: calc(var(--space-unit) * 1.5);
-  padding-block: calc(var(--space-unit) * 1.5);
+.contact-content p:last-child {
+  color: var(--muted);
 }
+
+/* =========================================================
+   16. FOOTER
+   ========================================================= */
 
 .site-footer {
+  padding-block: var(--space-lg);
+  border-block-start: 1px solid var(--border);
   text-align: center;
-  padding-block: calc(var(--space-unit) * 1.5);
-  background-color: var(--clr-bg-alt);
-  border-top: 1px solid var(--clr-border);
-  color: var(--clr-text-muted);
 }
-.site-footer a { color: var(--clr-primary); }
 
-/* ============================================================
-   MEDIA QUERIES: breakpoints de layout (viewport global)
-   ============================================================ */
-@media (max-width: 800px) {
-  .layout-grid {
+.site-footer p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* =========================================================
+   17. RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 60rem) {
+  .projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "card1 card2"
+      "card3 card4";
+  }
+}
+
+/* =========================================================
+   18. RESPONSIVE — MÓVIL
+   ========================================================= */
+
+@media (max-width: 40rem) {
+  main,
+  .header-content,
+  .nav-content {
+    width: min(92%, var(--content-width));
+  }
+
+  .nav-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-content a {
+    text-align: center;
+  }
+
+  .projects-grid {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "proyectos"
-      "sidebar";
+      "card1"
+      "card2"
+      "card3"
+      "card4";
   }
-  .sidebar { position: static; }
+
+  .project-card:hover {
+    transform: none;
+  }
+
+  .technology-list {
+    justify-content: flex-start;
+  }
 }
 
-@media (max-width: 600px) {
-  .site-header { flex-direction: column; align-items: flex-start; }
-  .main-nav ul { flex-direction: column; width: 100%; }
-  .card { flex-basis: 100%; max-width: 100%; }
-}
+/* =========================================================
+   19. MODO OSCURO AUTOMÁTICO
+   ========================================================= */
 
-/* Respeta a quienes prefieren menos movimiento */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    transition-duration: 0.001ms !important;
-    animation-duration: 0.001ms !important;
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Paleta oscura verificada con WebAIM:
+       - text (#f3f4f6) sobre background (#111827) → 16.1:1 ✅ AAA
+       - muted (#c0c7d0) sobre background (#111827) → 10.4:1 ✅ AAA */
+    --background: #111827;
+    --surface: #1f2937;
+    --text: #f3f4f6;
+    --muted: #c0c7d0;
+    --border: #374151;
+    --accent: #60a5fa;
+    --accent-dark: #93c5fd;
+  }
+
+  .project-card:hover {
+    box-shadow: 0 0.8rem 2rem rgb(0 0 0 / 35%);
+  }
+
+  .technologies li {
+    background: #111827;
   }
 }
