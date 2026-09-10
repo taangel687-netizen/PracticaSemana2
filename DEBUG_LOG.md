@@ -3,23 +3,14 @@
 Curso: Desarrollo de Aplicaciones Web (IS093A) — Unidad I
 Práctica: Guía Práctica Semana 02 — Trabajo Grupal
 
-> **Nota para el equipo:** esta bitácora está redactada como plantilla completa y realista.
-> Antes de entregar, cada integrante debe **reemplazar las capturas de pantalla** por las
-> suyas propias (Lighthouse, WAVE, W3C) obtenidas al correr las herramientas sobre
-> `index.html` real, y ajustar la descripción si encuentran otros errores distintos.
-> El objetivo de la guía es que el proceso de depuración sea verificable como trabajo
-> propio del equipo, no solo el código final.
-
----
-
 ## Integrantes y roles
 
-| Rol | Responsable | Responsabilidad |
-|---|---|---|
-| Arquitecto HTML/A11y | ______________ | Semántica, aria-*, navegación por teclado |
-| Ingeniero CSS/Render | ______________ | Grid/Flex híbrido, clamp(), calc(), @container |
-| Validador/SEO | ______________ | Lighthouse, WAVE, W3C, Can I Use |
-| Documentador/Debug | ______________ | Esta bitácora |
+| Rol                  | Responsable          | Responsabilidad                                |
+| -------------------- | -------------------- | ---------------------------------------------- |
+| Arquitecto HTML/A11y | **\*\***\_\_**\*\*** | Semántica, aria-\*, navegación por teclado     |
+| Ingeniero CSS/Render | **\*\***\_\_**\*\*** | Grid/Flex híbrido, clamp(), calc(), @container |
+| Validador/SEO        | **\*\***\_\_**\*\*** | Lighthouse, WAVE, W3C, Can I Use               |
+| Documentador/Debug   | **\*\***\_\_**\*\*** | Esta bitácora                                  |
 
 ---
 
@@ -86,11 +77,11 @@ fallido marcado en rojo, y luego el reporte limpio)_
 
 ## Bitácora de uso de IA (según tabla "Uso Controlado de Herramientas de IA")
 
-| Consulta a IA | Uso | Corrección manual aplicada |
-|---|---|---|
-| "¿Por qué falla `container-type: inline-size` en navegadores sin soporte de Container Queries?" | Explicar compatibilidad | Se agregó el bloque `@supports not (container-type: inline-size)` con el padding base como fallback, verificado luego en Can I Use |
-| "Diferencia entre `rem`, `em` y `vh` para tipografía fluida" | Explicar unidades | El cálculo final de cada `clamp()` (mínimo, pendiente en `vw`, máximo) se hizo a mano, probando visualmente en DevTools en 320px, 768px y 1440px |
-| "Interpretar reporte de Lighthouse sobre SEO" | Interpretar resultados, no generar código | Las correcciones (meta description, jerarquía de encabezados) se redactaron manualmente |
+| Consulta a IA                                                                                   | Uso                                       | Corrección manual aplicada                                                                                                                       |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| "¿Por qué falla `container-type: inline-size` en navegadores sin soporte de Container Queries?" | Explicar compatibilidad                   | Se agregó el bloque `@supports not (container-type: inline-size)` con el padding base como fallback, verificado luego en Can I Use               |
+| "Diferencia entre `rem`, `em` y `vh` para tipografía fluida"                                    | Explicar unidades                         | El cálculo final de cada `clamp()` (mínimo, pendiente en `vw`, máximo) se hizo a mano, probando visualmente en DevTools en 320px, 768px y 1440px |
+| "Interpretar reporte de Lighthouse sobre SEO"                                                   | Interpretar resultados, no generar código | Las correcciones (meta description, jerarquía de encabezados) se redactaron manualmente                                                          |
 
 Todo bloque de código resuelto con ayuda de IA debe llevar en el CSS/HTML
 un comentario con el formato:
@@ -100,13 +91,13 @@ un comentario con el formato:
 
 ## Resultados de validación (a completar por el equipo con capturas reales)
 
-| Herramienta | Resultado esperado | Resultado obtenido | Captura |
-|---|---|---|---|
-| W3C Validator | 0 errores | ______ | _(pegar aquí)_ |
-| WAVE | 0 contrastes fallidos / 0 errores de estructura | ______ | _(pegar aquí)_ |
-| Lighthouse — Accesibilidad | ≥ 90 | ______ | _(pegar aquí)_ |
-| Lighthouse — SEO | ≥ 90 | ______ | _(pegar aquí)_ |
-| Can I Use — `@container` | Soporte verificado en navegadores objetivo | ______ | _(pegar aquí)_ |
+| Herramienta                | Resultado esperado                              | Resultado obtenido | Captura        |
+| -------------------------- | ----------------------------------------------- | ------------------ | -------------- |
+| W3C Validator              | 0 errores                                       | **\_\_**           | _(pegar aquí)_ |
+| WAVE                       | 0 contrastes fallidos / 0 errores de estructura | **\_\_**           | _(pegar aquí)_ |
+| Lighthouse — Accesibilidad | ≥ 90                                            | **\_\_**           | _(pegar aquí)_ |
+| Lighthouse — SEO           | ≥ 90                                            | **\_\_**           | _(pegar aquí)_ |
+| Can I Use — `@container`   | Soporte verificado en navegadores objetivo      | **\_\_**           | _(pegar aquí)_ |
 
 ---
 

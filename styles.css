@@ -1,20 +1,4 @@
 /* =========================================================
-   GALERÍA DE PROYECTOS TÉCNICOS — styles.css
-   Autor: [Tu nombre / equipo]
-   Fecha: [fecha]
-   Descripción: CSS documentado manualmente para la práctica
-   de la Semana 02. Incluye Grid + Flexbox híbrido, tipografía
-   fluida con clamp(), espaciado lógico con calc() y variables,
-   Container Queries con fallback, y modo oscuro automático.
-
-   NOTA: Todos los cálculos de clamp() y calc() fueron
-   verificados a mano con la fórmula:
-     clamp(min, preferred, max)
-   y con la calculadora de contraste WCAG para asegurar
-   ratio >= 4.5:1 en texto normal y >= 3:1 en texto grande.
-   ========================================================= */
-
-/* =========================================================
    1. VARIABLES GLOBALES
    ========================================================= */
 
