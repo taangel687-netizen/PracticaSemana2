@@ -1,0 +1,292 @@
+/* ============================================================
+   VARIABLES GLOBALES (:root)
+   ============================================================ */
+:root {
+  --clr-bg: #ffffff;
+  --clr-bg-alt: #f4f6f8;
+  --clr-text: #17191c;
+  --clr-text-muted: #4b5563;
+  --clr-primary: #0b5fff;
+  --clr-primary-contrast: #ffffff;
+  --clr-accent: #ff6b35;
+  --clr-border: #d9dee3;
+  --clr-card-bg: #ffffff;
+
+  --space-unit: 1rem;                 /* base para calc() */
+  --radius: 12px;
+  --transition-speed: 0.35s;
+  --max-width: 1200px;
+
+  color-scheme: light;
+}
+
+/* Modo oscuro: se activa solo por preferencia del sistema, sin JS */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --clr-bg: #0f1115;
+    --clr-bg-alt: #181b21;
+    --clr-text: #eef1f4;
+    --clr-text-muted: #a7adb6;
+    --clr-primary: #6fa2ff;
+    --clr-primary-contrast: #06101f;
+    --clr-accent: #ff8a5c;
+    --clr-border: #2a2f37;
+    --clr-card-bg: #1b1f26;
+    color-scheme: dark;
+  }
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  /* Tipografía fluida con clamp(): mínimo, preferido con vw, máximo */
+  font-size: clamp(1rem, 0.92rem + 0.35vw, 1.15rem);
+  line-height: 1.6;
+  transition: background-color var(--transition-speed) ease,
+              color var(--transition-speed) ease;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* Foco visible consistente (accesibilidad de teclado) */
+a:focus-visible,
+button:focus-visible,
+.card:focus-visible {
+  outline: 3px solid var(--clr-accent);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   SKIP LINK
+   ============================================================ */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--clr-primary);
+  color: var(--clr-primary-contrast);
+  padding: calc(var(--space-unit) / 2) var(--space-unit);
+  border-radius: 0 0 var(--radius) 0;
+  z-index: 1000;
+  font-weight: 600;
+}
+.skip-link:focus {
+  left: 0; /* se hace visible solo al recibir foco por teclado */
+}
+
+/* ============================================================
+   HEADER + NAV
+   ============================================================ */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-unit);
+  padding-block: var(--space-unit);
+  padding-inline: calc(var(--space-unit) * 1.5);
+  background-color: var(--clr-bg-alt);
+  border-bottom: 1px solid var(--clr-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color var(--transition-speed) ease;
+}
+
+.header-brand h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 1.1rem + 1.6vw, 2.25rem);
+}
+.tagline {
+  margin: 0;
+  color: var(--clr-primary);
+  font-size: clamp(0.8rem, 0.72rem + 0.3vw, 1rem);
+}
+
+.main-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--space-unit) * 0.5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.main-nav a {
+  text-decoration: none;
+  color: var(--clr-text);
+  padding: calc(var(--space-unit) / 2) var(--space-unit);
+  border-radius: var(--radius);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.main-nav a:hover {
+  background-color: var(--clr-primary);
+  color: var(--clr-primary-contrast);
+}
+
+/* ============================================================
+   LAYOUT HÍBRIDO: CSS GRID para la estructura principal
+   ============================================================ */
+.layout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(220px, 1fr);
+  grid-template-areas: "proyectos sidebar";
+  gap: calc(var(--space-unit) * 1.5);
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: calc(var(--space-unit) * 1.5);
+  padding-block: calc(var(--space-unit) * 2);
+}
+.proyectos-section { grid-area: proyectos; }
+.sidebar            { grid-area: sidebar; }
+
+.section-intro { color: var(--clr-text-muted); max-width: 60ch; }
+
+/* ============================================================
+   FLEXBOX para las filas de tarjetas (masonry asimétrico sin JS)
+   flex-wrap + align-items:flex-start deja que cada tarjeta
+   conserve su propia altura, generando el efecto masonry.
+   ============================================================ */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: calc(var(--space-unit) * 1.25);
+}
+
+.card {
+  /* Cada tarjeta es su propio "contenedor de consulta" */
+  container-type: inline-size;
+  container-name: card;
+
+  flex: 1 1 260px;
+  max-width: 340px;
+  background-color: var(--clr-card-bg);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform var(--transition-speed) ease,
+              background-color var(--transition-speed) ease,
+              box-shadow var(--transition-speed) ease;
+}
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgb(0 0 0 / 0.12);
+}
+/* Alineación asimétrica: algunas tarjetas son intencionalmente más altas */
+.card--tall .card-body { padding-block-end: calc(var(--space-unit) * 2); }
+
+.card-body {
+  padding: var(--space-unit);
+}
+.card-body h3 {
+  margin-block: 0 calc(var(--space-unit) / 2);
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.25rem);
+}
+.card-body p {
+  margin: 0;
+  color: var(--clr-text-muted);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--space-unit) / 4);
+  list-style: none;
+  margin: calc(var(--space-unit) / 2) 0 0;
+  padding: 0;
+}
+.tags li {
+  background-color: var(--clr-bg-alt);
+  padding: calc(var(--space-unit) / 4) calc(var(--space-unit) / 2);
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+/* ============================================================
+   CONTAINER QUERIES: el propio componente reacciona a SU ancho,
+   no al del viewport. Útil cuando la tarjeta cambia de columna
+   (1 vs 2 vs 3 por fila) dentro del layout flexible.
+   ============================================================ */
+@container card (min-width: 300px) {
+  .card-body { padding: calc(var(--space-unit) * 1.25); }
+  .card-body h3 { font-size: clamp(1.1rem, 1rem + 0.5vw, 1.4rem); }
+}
+
+/* Fallback documentado: navegadores sin soporte de Container Queries
+   (verificado en Can I Use) reciben el espaciado base ya definido
+   arriba en .card-body, por lo que el layout nunca se rompe. */
+@supports not (container-type: inline-size) {
+  .card-body { padding: var(--space-unit); }
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar {
+  background-color: var(--clr-bg-alt);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  padding: var(--space-unit);
+  height: fit-content;
+  position: sticky;
+  top: calc(var(--space-unit) * 5);
+}
+.checklist { list-style: none; padding-inline-start: 0; }
+.checklist li { margin-block-end: calc(var(--space-unit) / 2); }
+
+/* ============================================================
+   ABOUT + FOOTER
+   ============================================================ */
+.about-section {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: calc(var(--space-unit) * 1.5);
+  padding-block: calc(var(--space-unit) * 1.5);
+}
+
+.site-footer {
+  text-align: center;
+  padding-block: calc(var(--space-unit) * 1.5);
+  background-color: var(--clr-bg-alt);
+  border-top: 1px solid var(--clr-border);
+  color: var(--clr-text-muted);
+}
+.site-footer a { color: var(--clr-primary); }
+
+/* ============================================================
+   MEDIA QUERIES: breakpoints de layout (viewport global)
+   ============================================================ */
+@media (max-width: 800px) {
+  .layout-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "proyectos"
+      "sidebar";
+  }
+  .sidebar { position: static; }
+}
+
+@media (max-width: 600px) {
+  .site-header { flex-direction: column; align-items: flex-start; }
+  .main-nav ul { flex-direction: column; width: 100%; }
+  .card { flex-basis: 100%; max-width: 100%; }
+}
+
+/* Respeta a quienes prefieren menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
